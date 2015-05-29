@@ -3,7 +3,6 @@ using Eto.Parse.Scanners;
 using System.Collections.Generic;
 using System.Linq;
 using Eto.Parse.Parsers;
-using System.Diagnostics;
 
 namespace Eto.Parse
 {

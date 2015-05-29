@@ -1,6 +1,3 @@
-using System;
-using Eto.Parse.Parsers;
-
 namespace Eto.Parse.Parsers
 {
 	public class EolTerminal : Parser

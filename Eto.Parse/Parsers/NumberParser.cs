@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 
 namespace Eto.Parse.Parsers
@@ -39,8 +39,20 @@ namespace Eto.Parse.Parsers
 			base.Initialize(args);
 			if (args.Push(this))
 			{
-				if (ValueType != null)
+				if (ValueType != null) {
+#if DNXCORE50
+					parseMethod = ValueType.GetTypeInfo().GetDeclaredMethods("Parse")
+							.FirstOrDefault(x => {
+								if (!x.IsStatic || !x.IsPublic) {
+									return false;
+								}
+								var parameters = x.GetParameters();
+								return parameters.Length == 1 && parameters[0].ParameterType == typeof(NumberStyles);
+							});
+#else
 					parseMethod = ValueType.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public, null, new Type[] { typeof(string), typeof(NumberStyles) }, null);
+#endif
+				}
 				args.Pop();
 			}
 		}

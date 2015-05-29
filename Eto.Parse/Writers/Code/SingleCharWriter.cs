@@ -1,7 +1,4 @@
-using System;
 using Eto.Parse.Parsers;
-using System.Text;
-using System.Linq;
 
 namespace Eto.Parse.Writers.Code
 {

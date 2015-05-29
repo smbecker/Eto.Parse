@@ -4,13 +4,16 @@ using System.Linq;
 
 namespace Eto.Parse.Parsers
 {
-	public sealed class RepeatCharItem : ICloneable
+	public sealed class RepeatCharItem
+#if !DNXCORE50
+		: ICloneable
+#endif
 	{
 		public Func<char, bool> Test { get; set; }
 		public int Minimum { get; set; }
 		public int Maximum { get; set; }
 
-		protected RepeatCharItem(RepeatCharItem other)
+		private RepeatCharItem(RepeatCharItem other)
 		{
 			Test = other.Test;
 			Minimum = other.Minimum;
@@ -29,10 +32,17 @@ namespace Eto.Parse.Parsers
 			return new RepeatCharItem(ch => ch == literalChar, 1, 1);
 		}
 
-		public object Clone()
+		public RepeatCharItem Clone()
 		{
 			return new RepeatCharItem(this);
 		}
+
+#if !DNXCORE50
+		object ICloneable.Clone()
+		{
+			return Clone();
+		}
+#endif
 	}
 
 	public class RepeatCharTerminal : Parser

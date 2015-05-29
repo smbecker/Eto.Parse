@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-using System.CodeDom.Compiler;
 
 namespace Eto.Parse
 {
@@ -23,9 +21,8 @@ namespace Eto.Parse
 
 		public void Write(Parser parser, TextWriter writer)
 		{
-			var args = new TextParserWriterArgs
+			var args = new TextParserWriterArgs(writer, Indent)
 			{
-				Output = new IndentedTextWriter(writer, Indent), 
 				Writer = this
 			};
 			WriteParser(args, parser);

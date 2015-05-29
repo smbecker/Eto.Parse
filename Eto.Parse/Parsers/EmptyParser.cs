@@ -1,4 +1,3 @@
-
 namespace Eto.Parse.Parsers
 {
 	public class EmptyParser : Parser

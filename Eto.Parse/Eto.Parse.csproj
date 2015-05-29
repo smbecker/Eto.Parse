@@ -61,6 +61,7 @@
     <Compile Include="ParseArgs.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Parsers\AnySurrogatePairTerminal.cs" />
+    <Compile Include="Parsers\ISeparatedParser.cs" />
     <Compile Include="Parsers\SingleSurrogatePairTerminal.cs" />
     <Compile Include="Parsers\SurrogatePairRangeTerminal.cs" />
     <Compile Include="Parsers\SurrogatePairTerminal.cs" />
@@ -118,7 +119,6 @@
     <Compile Include="Grammars\EbnfGrammar.cs" />
     <Compile Include="Parsers\ExceptParser.cs" />
     <Compile Include="Writers\Code\ExceptWriter.cs" />
-    <Compile Include="ISeparatedParser.cs" />
     <Compile Include="Writers\Code\StringWriter.cs" />
     <Compile Include="Writers\Code\NumberWriter.cs" />
     <Compile Include="Writers\Code\InverseWriter.cs" />

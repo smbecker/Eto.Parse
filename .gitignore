@@ -5,3 +5,5 @@ obj/
 test-results
 packages/
 *.user
+artifacts/
+*.lock.json

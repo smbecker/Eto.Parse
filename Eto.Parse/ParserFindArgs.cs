@@ -1,5 +1,3 @@
-using System;
-
 namespace Eto.Parse
 {
 	public class ParserFindArgs : ParserChain

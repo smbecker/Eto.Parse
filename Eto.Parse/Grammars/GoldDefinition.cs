@@ -1,10 +1,6 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using Eto.Parse.Parsers;
-using System.IO;
-using System.CodeDom.Compiler;
-using Eto.Parse.Writers;
 
 namespace Eto.Parse.Grammars
 {
@@ -91,8 +87,8 @@ namespace Eto.Parse.Grammars
 
 		public GoldDefinition()
 		{
-			Properties = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
-			Sets = new Dictionary<string, Parser>(StringComparer.InvariantCultureIgnoreCase)
+			Properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+			Sets = new Dictionary<string, Parser>(StringComparer.OrdinalIgnoreCase)
 			{
 				{ "HT", Parse.Terminals.Set(0x09) },
 				{ "LF", Parse.Terminals.Set(0x0A) },
@@ -113,11 +109,11 @@ namespace Eto.Parse.Grammars
 				{ "Printable Extended", Parse.Terminals.Range(0xA1, 0xFF) },
 				{ "Whitespace", Parse.Terminals.Range(0x09, 0x0D) | Parse.Terminals.Set(0x20, 0xA0) },
 			};
-			Terminals = new Dictionary<string, Parser>(StringComparer.InvariantCultureIgnoreCase)
+			Terminals = new Dictionary<string, Parser>(StringComparer.OrdinalIgnoreCase)
 			{
 				{ "Whitespace", +Sets["Whitespace"] }
 			};
-			Rules = new Dictionary<string, UnaryParser>(StringComparer.InvariantCultureIgnoreCase);
+			Rules = new Dictionary<string, UnaryParser>(StringComparer.OrdinalIgnoreCase);
 			CreateSeparator();
 		}
 	}

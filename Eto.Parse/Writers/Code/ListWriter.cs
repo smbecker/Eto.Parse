@@ -1,7 +1,5 @@
-using System;
-using Eto.Parse.Parsers;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 
 namespace Eto.Parse.Writers.Code
 {
@@ -11,11 +9,7 @@ namespace Eto.Parse.Writers.Code
 		public override void WriteContents(TextParserWriterArgs args, T parser, string name)
 		{
 			base.WriteContents(args, parser, name);
-			var items = new List<string>();
-			parser.Items.ForEach(r => {
-				var child = r != null ? args.Write(r) : "null";
-				items.Add(child);
-			});
+			var items = new List<string>(parser.Items.Select(r => r != null ? args.Write(r) : "null"));
 			args.Output.WriteLine("{0}.Items.AddRange(new Eto.Parse.Parser[] {{ {1} }});", name, string.Join(", ", items));
 		}
 	}

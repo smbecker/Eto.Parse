@@ -1,5 +1,3 @@
-using System;
-
 namespace Eto.Parse.Parsers
 {
 	public class AnyCharTerminal : Parser

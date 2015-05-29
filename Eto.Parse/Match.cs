@@ -163,5 +163,14 @@ namespace Eto.Parse
 		{
 			get { return Find(id, deep).FirstOrDefault() ?? Match.EmptyMatch; }
 		}
+
+#if DNXCORE50
+		public void ForEach(Action<Match> action)
+		{
+			foreach (var match in this) {
+				action(match);
+			}
+		}
+#endif
 	}
 }

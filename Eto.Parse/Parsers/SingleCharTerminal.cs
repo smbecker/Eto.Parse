@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using Eto.Parse.Parsers;
-
 namespace Eto.Parse.Parsers
 {
 	public class SingleCharTerminal : CharTerminal

@@ -5,8 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Eto.Parse.Writers;
 using System.IO;
-using System.CodeDom.Compiler;
 using System.Globalization;
+#if DNXCORE50
+using System.Reflection;
+#else
+using System.CodeDom.Compiler;
+#endif
 
 namespace Eto.Parse.Grammars
 {
@@ -108,7 +112,7 @@ namespace Eto.Parse.Grammars
 	public class EbnfGrammar : Grammar
 	{
 		Dictionary<string, Parser> parserLookup;
-		Dictionary<string, Parser> specialLookup = new Dictionary<string, Parser>(StringComparer.InvariantCultureIgnoreCase);
+		Dictionary<string, Parser> specialLookup = new Dictionary<string, Parser>(StringComparer.OrdinalIgnoreCase);
 		string startParserName;
 		Parser separator;
 
@@ -139,9 +143,17 @@ namespace Eto.Parse.Grammars
 		void GenerateSpecialSequences()
 		{
 			// special sequences for each terminal
+#if DNXCORE50
+			foreach (var property in typeof(Terminals).GetTypeInfo().DeclaredProperties)
+#else
 			foreach (var property in typeof(Terminals).GetProperties())
+#endif
 			{
+#if DNXCORE50
+				if (typeof(Parser).GetTypeInfo().IsAssignableFrom(property.PropertyType.GetTypeInfo()))
+#else
 				if (typeof(Parser).IsAssignableFrom(property.PropertyType))
+#endif
 				{
 					var parser = property.GetValue(null, null) as Parser;
 					var name = "Terminals." + property.Name;
@@ -320,7 +332,6 @@ namespace Eto.Parse.Grammars
 						break;
 					default:
 						throw new FormatException(string.Format("Cardinality '{0}' is unknown", cardinality.Text));
-						break;
 				}
 			}
 			var integer = match["integer"];
@@ -428,7 +439,7 @@ namespace Eto.Parse.Grammars
 
 		protected override int InnerParse(ParseArgs args)
 		{
-			parserLookup = new Dictionary<string, Parser>(StringComparer.InvariantCultureIgnoreCase);
+			parserLookup = new Dictionary<string, Parser>(StringComparer.OrdinalIgnoreCase);
 			if (DefineCommonNonTerminals)
 			{
 				parserLookup["letter or digit"] = Terminals.LetterOrDigit;
@@ -467,13 +478,21 @@ namespace Eto.Parse.Grammars
 		public void ToCode(string bnf, string startParserName, TextWriter writer, string className = "GeneratedGrammar")
 		{
 			var parser = Build(bnf, startParserName);
+#if DNXCORE50
+			var iw = writer;
+#else
 			var iw = new IndentedTextWriter(writer, "    ");
+#endif
 
 			iw.WriteLine("/* Date Created: {0}, Source EBNF:", DateTime.Now);
+#if !DNXCORE50
 			iw.Indent++;
+#endif
 			foreach (var line in bnf.Split('\n'))
 				iw.WriteLine(line);
+#if !DNXCORE50
 			iw.Indent--;
+#endif
 			iw.WriteLine("*/");
 
 			var parserWriter = new CodeParserWriter

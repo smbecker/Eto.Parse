@@ -1,6 +1,4 @@
-using System;
 using System.Linq;
-using Eto.Parse.Parsers;
 using System.Collections.Generic;
 
 namespace Eto.Parse.Parsers

@@ -1,4 +1,3 @@
-using System;
 using Eto.Parse.Parsers;
 
 namespace Eto.Parse.Writers.Code

@@ -2,9 +2,11 @@ using System;
 using System.Linq;
 using Eto.Parse.Parsers;
 using System.IO;
-using System.CodeDom.Compiler;
-using Eto.Parse.Writers;
 using System.Globalization;
+#if !DNXCORE50
+using System.CodeDom.Compiler;
+#endif
+using Eto.Parse.Writers;
 
 namespace Eto.Parse.Grammars
 {
@@ -372,13 +374,21 @@ namespace Eto.Parse.Grammars
 		public void ToCode(string grammar, TextWriter writer, string className = "GeneratedGrammar")
 		{
 			var definition = Build(grammar);
+#if DNXCORE50
+			var iw = writer;
+#else
 			var iw = new IndentedTextWriter(writer, "    ");
+#endif
 
 			iw.WriteLine("/* Date Created: {0}, Source:", DateTime.Now);
-			iw.Indent ++;
+#if !DNXCORE50
+			iw.Indent++;
+#endif
 			foreach (var line in grammar.Split('\n'))
 				iw.WriteLine(line);
-			iw.Indent --;
+#if !DNXCORE50
+			iw.Indent--;
+#endif
 			iw.WriteLine("*/");
 
 			var parserWriter = new CodeParserWriter

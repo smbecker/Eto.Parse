@@ -1,5 +1,3 @@
-using Eto.Parse;
-
 namespace Eto.Parse.Parsers
 {
 	public class LiteralTerminal : Parser

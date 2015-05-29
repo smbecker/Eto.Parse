@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Eto.Parse")]
@@ -12,7 +11,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
+#if !DNXCORE50
 [assembly: Guid("e3050697-368d-413b-b5f6-59de5cb5c72d")]
+#endif
 
 // Version information for an assembly consists of the following four values:
 //

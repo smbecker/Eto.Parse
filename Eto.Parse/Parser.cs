@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if DNXCORE50
+using System.Reflection;
+#endif
 
 namespace Eto.Parse
 {
@@ -13,7 +16,10 @@ namespace Eto.Parse
 	/// for parsers that contain a list of children parsers, or <see cref="UnaryParser"/> for parsers
 	/// that contain a single child.
 	/// </remarks>
-	public abstract partial class Parser : ICloneable
+	public abstract partial class Parser
+#if !DNXCORE50
+		: ICloneable
+#endif
 	{
 		bool hasNamedChildren;
 		ParseMode mode;
@@ -28,7 +34,7 @@ namespace Eto.Parse
 			NamedChildren
 		}
 
-		#region Properties
+#region Properties
 
 		/// <summary>
 		/// Gets or sets the name of the match added to the match result tree
@@ -91,7 +97,14 @@ namespace Eto.Parse
 					return this.name;
 				var type = GetType();
 				var name = type.Name;
-				if (type.Assembly == typeof(Parser).Assembly && name.EndsWith("Parser", StringComparison.Ordinal))
+#if DNXCORE50
+				var typeAssembly = type.GetTypeInfo().Assembly;
+				var thisAssembly = typeof(Parser).GetTypeInfo().Assembly;
+#else
+				var typeAssembly = type.Assembly;
+				var thisAssembly = typeof(Parser).Assembly;
+#endif
+				if (typeAssembly == thisAssembly && name.EndsWith("Parser", StringComparison.Ordinal))
 					name = name.Substring(0, name.LastIndexOf("Parser", StringComparison.Ordinal));
 				return name;
 			}
@@ -111,9 +124,9 @@ namespace Eto.Parse
 		/// </remarks>
 		protected bool HasNamedChildren { get { return hasNamedChildren; } }
 
-		#endregion
+#endregion
 
-		#region Events
+#region Events
 
 		/// <summary>
 		/// Event to handle when this parser is matched
@@ -158,7 +171,7 @@ namespace Eto.Parse
 			OnPreMatch(match);
 		}
 
-		#endregion
+#endregion
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Eto.Parse.Parser"/> class.
@@ -369,10 +382,12 @@ namespace Eto.Parse
 
 		public abstract Parser Clone(ParserCloneArgs args);
 
+#if !DNXCORE50
 		object ICloneable.Clone()
 		{
 			return Clone();
 		}
+#endif
 
 		/// <summary>
 		/// Sets the <see cref="AddError"/> flag on all children of this parser

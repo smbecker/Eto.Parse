@@ -2,10 +2,13 @@ using System;
 using Eto.Parse.Parsers;
 using Eto.Parse.Scanners;
 using System.Collections.Generic;
-using System.Linq;
 using Eto.Parse.Writers;
 using System.IO;
+#if DNXCORE50
+using System.Reflection;
+#else
 using System.CodeDom.Compiler;
+#endif
 
 namespace Eto.Parse.Grammars
 {
@@ -22,8 +25,8 @@ namespace Eto.Parse.Grammars
 	/// </remarks>
 	public class BnfGrammar : Grammar
 	{
-		Dictionary<string, Parser> parserLookup = new Dictionary<string, Parser>(StringComparer.InvariantCultureIgnoreCase);
-		readonly Dictionary<string, Parser> baseLookup = new Dictionary<string, Parser>(StringComparer.InvariantCultureIgnoreCase);
+		Dictionary<string, Parser> parserLookup = new Dictionary<string, Parser>(StringComparer.OrdinalIgnoreCase);
+		readonly Dictionary<string, Parser> baseLookup = new Dictionary<string, Parser>(StringComparer.OrdinalIgnoreCase);
 		readonly Parser sws = Terminals.SingleLineWhiteSpace.Repeat(0);
 		readonly Parser ws = Terminals.WhiteSpace.Repeat(0);
 		readonly Parser sq = Terminals.Set('\'');
@@ -80,9 +83,17 @@ namespace Eto.Parse.Grammars
 		{
 			if (enhanced)
 			{
+#if DNXCORE50
+				foreach (var property in typeof(Terminals).GetTypeInfo().DeclaredProperties)
+#else
 				foreach (var property in typeof(Terminals).GetProperties())
+#endif
 				{
+#if DNXCORE50
+					if (typeof(Parser).GetTypeInfo().IsAssignableFrom(property.PropertyType.GetTypeInfo()))
+#else
 					if (typeof(Parser).IsAssignableFrom(property.PropertyType))
+#endif
 					{
 						var parser = property.GetValue(null, null) as Parser;
 						baseLookup[property.Name] = parser.Named(property.Name);
@@ -219,13 +230,21 @@ namespace Eto.Parse.Grammars
 		public void ToCode(string bnf, string startParserName, TextWriter writer, string className = "GeneratedGrammar")
 		{
 			var parser = Build(bnf, startParserName);
+#if DNXCORE50
+			var iw = writer;
+#else
 			var iw = new IndentedTextWriter(writer, "    ");
+#endif
 
 			iw.WriteLine("/* Date Created: {0}, Source BNF:", DateTime.Now);
-			iw.Indent ++;
+#if !DNXCORE50
+			iw.Indent++;
+#endif
 			foreach (var line in bnf.Split('\n'))
 				iw.WriteLine(line);
-			iw.Indent --;
+#if !DNXCORE50
+			iw.Indent--;
+#endif
 			iw.WriteLine("*/");
 
 			var parserWriter = new CodeParserWriter

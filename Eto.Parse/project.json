@@ -1,0 +1,35 @@
+﻿{
+	"name": "Eto.Parse",
+	"version": "1.4.1.0",
+	"description": "A recursive descent LL(k) parser framework for .NET",
+	"authors": [ "Picoe Software Solutions, Inc." ],
+	"tags": [
+		"parser",
+		"generator",
+		"regex",
+		"irony",
+		"grammar",
+		"fluent",
+		"yacc",
+		"lex",
+		"ebnf",
+		"bnf",
+		"gold"
+	],
+	"projectUrl": "https://github.com/picoe/Eto.Parse",
+	"licenseUrl": "https://github.com/picoe/Eto.Parse/blob/master/LICENSE",
+	"frameworks": {
+		"net45": {},
+		"dnx451": {},
+		"dnxcore50": {
+			"dependencies": {
+				"System.IO": "4.0.10-beta-22816",
+				"System.Linq": "4.0.0-beta-22816",
+				"System.Reflection.Extensions": "4.0.0-beta-22816",
+				"System.Reflection.Primitives": "4.0.0-beta-22816",
+				"System.Runtime": "4.0.20-beta-22816",
+				"System.Runtime.Extensions": "4.0.10-beta-22816"
+			}
+		}
+	}
+}

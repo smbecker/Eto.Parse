@@ -1,5 +1,4 @@
 using System;
-using Eto.Parse;
 using System.Linq;
 
 namespace Eto.Parse.Parsers

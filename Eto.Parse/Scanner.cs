@@ -1,5 +1,3 @@
-using System;
-
 namespace Eto.Parse
 {
 	public abstract class Scanner

@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+#if DNXCORE50
+using System.Reflection;
+#endif
 
 namespace Eto.Parse
 {
@@ -47,7 +50,11 @@ namespace Eto.Parse
 				IParserWriterHandler handler;
 				if (ParserWriters.TryGetValue(type, out handler))
 					return handler.Write(args, parser);
+#if DNXCORE50
+				type = type.GetTypeInfo().BaseType;
+#else
 				type = type.BaseType;
+#endif
 			}
 			return null;
 		}

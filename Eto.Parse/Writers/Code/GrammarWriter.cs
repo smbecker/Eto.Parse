@@ -1,8 +1,3 @@
-using System;
-using Eto.Parse.Parsers;
-using System.Collections.Generic;
-using System.IO;
-
 namespace Eto.Parse.Writers.Code
 {
 	public class GrammarWriter : UnaryWriter<Grammar>
@@ -28,14 +23,22 @@ namespace Eto.Parse.Writers.Code
 				var iw = args.Output;
 				iw.WriteLine("public class {0} : Eto.Parse.Grammar", writer.ClassName);
 				iw.WriteLine("{");
+#if !DNXCORE50
 				iw.Indent ++;
+#endif
 
 				iw.WriteLine("public {0}()", writer.ClassName);
+#if !DNXCORE50
 				iw.Indent ++;
+#endif
 				iw.WriteLine(": base(\"{0}\")", parser.Name.Replace("\"", "\\\""));
+#if !DNXCORE50
 				iw.Indent --;
+#endif
 				iw.WriteLine("{");
+#if !DNXCORE50
 				iw.Indent ++;
+#endif
 
 				base.WriteObject(args, parser, name);
 			}
@@ -54,9 +57,13 @@ namespace Eto.Parse.Writers.Code
 			if (!string.IsNullOrEmpty(writer.ClassName))
 			{
 				var iw = args.Output;
+#if !DNXCORE50
 				iw.Indent --;
+#endif
 				iw.WriteLine("}");
+#if !DNXCORE50
 				iw.Indent --;
+#endif
 				iw.WriteLine("}");
 			}
 		}
