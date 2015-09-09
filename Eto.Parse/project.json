@@ -1,6 +1,6 @@
 ﻿{
 	"name": "Eto.Parse",
-	"version": "1.4.1.0",
+	"version": "1.4.1",
 	"description": "A recursive descent LL(k) parser framework for .NET",
 	"authors": [ "Picoe Software Solutions, Inc." ],
 	"tags": [
