@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-#if DNXCORE50
+#if CORECLR
 using System.Reflection;
 #endif
 
@@ -50,7 +50,7 @@ namespace Eto.Parse
 				IParserWriterHandler handler;
 				if (ParserWriters.TryGetValue(type, out handler))
 					return handler.Write(args, parser);
-#if DNXCORE50
+#if CORECLR
 				type = type.GetTypeInfo().BaseType;
 #else
 				type = type.BaseType;

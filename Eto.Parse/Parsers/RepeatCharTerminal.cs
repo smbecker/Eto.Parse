@@ -5,7 +5,7 @@ using System.Linq;
 namespace Eto.Parse.Parsers
 {
 	public sealed class RepeatCharItem
-#if !DNXCORE50
+#if !CORECLR
 		: ICloneable
 #endif
 	{
@@ -37,7 +37,7 @@ namespace Eto.Parse.Parsers
 			return new RepeatCharItem(this);
 		}
 
-#if !DNXCORE50
+#if !CORECLR
 		object ICloneable.Clone()
 		{
 			return Clone();

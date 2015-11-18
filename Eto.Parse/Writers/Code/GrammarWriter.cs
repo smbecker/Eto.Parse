@@ -23,20 +23,20 @@ namespace Eto.Parse.Writers.Code
 				var iw = args.Output;
 				iw.WriteLine("public class {0} : Eto.Parse.Grammar", writer.ClassName);
 				iw.WriteLine("{");
-#if !DNXCORE50
+#if !CORECLR
 				iw.Indent ++;
 #endif
 
 				iw.WriteLine("public {0}()", writer.ClassName);
-#if !DNXCORE50
+#if !CORECLR
 				iw.Indent ++;
 #endif
 				iw.WriteLine(": base(\"{0}\")", parser.Name.Replace("\"", "\\\""));
-#if !DNXCORE50
+#if !CORECLR
 				iw.Indent --;
 #endif
 				iw.WriteLine("{");
-#if !DNXCORE50
+#if !CORECLR
 				iw.Indent ++;
 #endif
 
@@ -57,11 +57,11 @@ namespace Eto.Parse.Writers.Code
 			if (!string.IsNullOrEmpty(writer.ClassName))
 			{
 				var iw = args.Output;
-#if !DNXCORE50
+#if !CORECLR
 				iw.Indent --;
 #endif
 				iw.WriteLine("}");
-#if !DNXCORE50
+#if !CORECLR
 				iw.Indent --;
 #endif
 				iw.WriteLine("}");

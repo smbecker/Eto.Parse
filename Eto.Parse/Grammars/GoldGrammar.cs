@@ -3,7 +3,7 @@ using System.Linq;
 using Eto.Parse.Parsers;
 using System.IO;
 using System.Globalization;
-#if !DNXCORE50
+#if !CORECLR
 using System.CodeDom.Compiler;
 #endif
 using Eto.Parse.Writers;
@@ -374,19 +374,19 @@ namespace Eto.Parse.Grammars
 		public void ToCode(string grammar, TextWriter writer, string className = "GeneratedGrammar")
 		{
 			var definition = Build(grammar);
-#if DNXCORE50
+#if CORECLR
 			var iw = writer;
 #else
 			var iw = new IndentedTextWriter(writer, "    ");
 #endif
 
 			iw.WriteLine("/* Date Created: {0}, Source:", DateTime.Now);
-#if !DNXCORE50
+#if !CORECLR
 			iw.Indent++;
 #endif
 			foreach (var line in grammar.Split('\n'))
 				iw.WriteLine(line);
-#if !DNXCORE50
+#if !CORECLR
 			iw.Indent--;
 #endif
 			iw.WriteLine("*/");

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if DNXCORE50
+#if CORECLR
 using System.Reflection;
 #endif
 
@@ -17,7 +17,7 @@ namespace Eto.Parse
 	/// that contain a single child.
 	/// </remarks>
 	public abstract partial class Parser
-#if !DNXCORE50
+#if !CORECLR
 		: ICloneable
 #endif
 	{
@@ -97,7 +97,7 @@ namespace Eto.Parse
 					return this.name;
 				var type = GetType();
 				var name = type.Name;
-#if DNXCORE50
+#if CORECLR
 				var typeAssembly = type.GetTypeInfo().Assembly;
 				var thisAssembly = typeof(Parser).GetTypeInfo().Assembly;
 #else
@@ -382,7 +382,7 @@ namespace Eto.Parse
 
 		public abstract Parser Clone(ParserCloneArgs args);
 
-#if !DNXCORE50
+#if !CORECLR
 		object ICloneable.Clone()
 		{
 			return Clone();

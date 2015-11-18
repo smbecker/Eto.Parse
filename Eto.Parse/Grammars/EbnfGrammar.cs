@@ -6,7 +6,7 @@ using System.Linq;
 using Eto.Parse.Writers;
 using System.IO;
 using System.Globalization;
-#if DNXCORE50
+#if CORECLR
 using System.Reflection;
 #else
 using System.CodeDom.Compiler;
@@ -143,13 +143,13 @@ namespace Eto.Parse.Grammars
 		void GenerateSpecialSequences()
 		{
 			// special sequences for each terminal
-#if DNXCORE50
+#if CORECLR
 			foreach (var property in typeof(Terminals).GetTypeInfo().DeclaredProperties)
 #else
 			foreach (var property in typeof(Terminals).GetProperties())
 #endif
 			{
-#if DNXCORE50
+#if CORECLR
 				if (typeof(Parser).GetTypeInfo().IsAssignableFrom(property.PropertyType.GetTypeInfo()))
 #else
 				if (typeof(Parser).IsAssignableFrom(property.PropertyType))
@@ -478,19 +478,19 @@ namespace Eto.Parse.Grammars
 		public void ToCode(string bnf, string startParserName, TextWriter writer, string className = "GeneratedGrammar")
 		{
 			var parser = Build(bnf, startParserName);
-#if DNXCORE50
+#if CORECLR
 			var iw = writer;
 #else
 			var iw = new IndentedTextWriter(writer, "    ");
 #endif
 
 			iw.WriteLine("/* Date Created: {0}, Source EBNF:", DateTime.Now);
-#if !DNXCORE50
+#if !CORECLR
 			iw.Indent++;
 #endif
 			foreach (var line in bnf.Split('\n'))
 				iw.WriteLine(line);
-#if !DNXCORE50
+#if !CORECLR
 			iw.Indent--;
 #endif
 			iw.WriteLine("*/");

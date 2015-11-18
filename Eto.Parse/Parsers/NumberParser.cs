@@ -40,7 +40,7 @@ namespace Eto.Parse.Parsers
 			if (args.Push(this))
 			{
 				if (ValueType != null) {
-#if DNXCORE50
+#if CORECLR
 					parseMethod = ValueType.GetTypeInfo().GetDeclaredMethods("Parse")
 							.FirstOrDefault(x => {
 								if (!x.IsStatic || !x.IsPublic) {

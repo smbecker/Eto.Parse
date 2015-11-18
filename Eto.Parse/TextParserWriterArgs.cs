@@ -1,5 +1,5 @@
 using System.IO;
-#if DNXCORE50
+#if CORECLR
 using OutputWriter = System.IO.TextWriter;
 #else
 using OutputWriter = System.CodeDom.Compiler.IndentedTextWriter;
@@ -11,7 +11,7 @@ namespace Eto.Parse
 	{
 		public TextParserWriterArgs(TextWriter writer, string indent) 
 		{
-#if DNXCORE50
+#if CORECLR
 			Output = writer;
 #else
 			Output = new OutputWriter(writer, indent);
@@ -24,7 +24,7 @@ namespace Eto.Parse
 		{
 			get 
 			{
-#if DNXCORE50
+#if CORECLR
 				return 0;
 #else
 				return Output.Indent;
@@ -32,7 +32,7 @@ namespace Eto.Parse
 			}
 			set 
 			{
-#if !DNXCORE50
+#if !CORECLR
 				Output.Indent = value;
 #endif
 			}
