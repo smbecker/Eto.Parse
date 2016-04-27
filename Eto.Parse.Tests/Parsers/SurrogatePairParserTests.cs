@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Linq;
 using Eto.Parse.Parsers;
-using NUnit.Framework;
+using Xunit;
 
 namespace Eto.Parse.Tests.Parsers
 {
-    [TestFixture]
     public class SurrogatePairParserTests
     {
-        [Test]
+        [Fact]
         public void TestAnySurrogatePair()
         {
             var chars = string.Format("{0},{1},{2}",
@@ -22,11 +21,11 @@ namespace Eto.Parse.Tests.Parsers
 
             var match = grammar.Match(chars);
 
-            Assert.IsTrue(match.Success, match.ErrorMessage);
-            CollectionAssert.AreEquivalent(new []{0x10000, 0x87FFF, 0x10FFFF}, match.Find("char").Select(parser.GetValue));
+            Assert.True(match.Success, match.ErrorMessage);
+            Assert.Equal(new object[]{0x10000, 0x87FFF, 0x10FFFF}, match.Find("char").Select(parser.GetValue));
         }
 
-        [Test]
+        [Fact]
         public void TestMatchingSpecificSurrogatePairByCodePoint()
         {
             var sample = char.ConvertFromUtf32(0x87FFF);
@@ -37,11 +36,11 @@ namespace Eto.Parse.Tests.Parsers
 
             var match = grammar.Match(sample);
 
-            Assert.IsTrue(match.Success, match.ErrorMessage);
-            Assert.AreEqual(0x87FFF, parser.GetValue(match.Find("char").Single()));
+            Assert.True(match.Success, match.ErrorMessage);
+            Assert.Equal(0x87FFF, parser.GetValue(match.Find("char").Single()));
         }
 
-        [Test]
+        [Fact]
         public void TestUnmatchedSpecificSurrogatePairByCodePoint()
         {
             var sample = char.ConvertFromUtf32(0x17DF6);
@@ -52,12 +51,13 @@ namespace Eto.Parse.Tests.Parsers
 
             var match = grammar.Match(sample);
 
-            Assert.IsFalse(match.Success, match.ErrorMessage);
+            Assert.False(match.Success, match.ErrorMessage);
         }
 
-        [TestCase(0x12345, TestName = "Lower bound")]
-        [TestCase(0x57FFF, TestName = "Within range")]
-        [TestCase(0x8F4FE, TestName = "Upper bound")]
+		[Theory]
+        [InlineData(0x12345)]
+        [InlineData(0x57FFF)]
+        [InlineData(0x8F4FE)]
         public void TestMatchingRange(int codePoint)
         {
             var sample = char.ConvertFromUtf32(codePoint);
@@ -68,11 +68,12 @@ namespace Eto.Parse.Tests.Parsers
 
             var match = grammar.Match(sample);
 
-            Assert.IsTrue(match.Success, match.ErrorMessage);
+            Assert.True(match.Success, match.ErrorMessage);
         }
 
-        [TestCase(0x12345, TestName = "Outside lower bound")]
-        [TestCase(0x8F4FE, TestName = "Outside upper bound")]
+		[Theory]
+        [InlineData(0x12345)]
+        [InlineData(0x8F4FE)]
         public void TestMatchOutsideRange(int codePoint)
         {
             var sample = char.ConvertFromUtf32(codePoint);
@@ -83,12 +84,13 @@ namespace Eto.Parse.Tests.Parsers
 
             var match = grammar.Match(sample);
 
-            Assert.IsFalse(match.Success, "Value {0} should be outside given range", codePoint);
+            Assert.False(match.Success, string.Format("Value {0} should be outside given range", codePoint));
         }
 
-        [TestCase(50, TestName = "Ordinary char")]
-        [TestCase(0x10FFFF + 1, TestName = "Value too high")]
-        [TestCase(-1, TestName = "Negative value")]
+		[Theory]
+        [InlineData(50)]
+        [InlineData(0x10FFFF + 1)]
+        [InlineData(-1)]
         public void TestInvaldCodePoint(int codePoint)
         {
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() =>
@@ -96,10 +98,10 @@ namespace Eto.Parse.Tests.Parsers
                     new SingleSurrogatePairTerminal(codePoint);
                 });
 
-            Assert.That("codePoint", Is.EqualTo(exception.ParamName));
+            Assert.Equal("codePoint", exception.ParamName);
         }
 
-        [Test]
+        [Fact]
         public void TestUseWithOtherParser()
         {
             var sample = "abc" + char.ConvertFromUtf32(0x8F4FE) + "def" + char.ConvertFromUtf32(0x56734);
@@ -110,8 +112,8 @@ namespace Eto.Parse.Tests.Parsers
 
             var match = grammar.Match(sample);
 
-            Assert.IsTrue(match.Success, match.ErrorMessage);
-            Assert.That(match.Length, Is.EqualTo(10));
+            Assert.True(match.Success, match.ErrorMessage);
+            Assert.Equal(10, match.Length);
         }
     }
 }

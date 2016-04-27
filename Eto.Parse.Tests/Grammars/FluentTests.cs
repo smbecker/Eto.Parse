@@ -1,13 +1,10 @@
-using System;
-using NUnit.Framework;
-using Eto.Parse;
+using Xunit;
 
 namespace Eto.Parse.Tests.Grammars
 {
-	[TestFixture]
 	public class FluentTests
 	{
-		[Test]
+		[Fact]
 		public void Simple()
 		{
 			var input = "  hello ( parsing world )  ";
@@ -32,12 +29,12 @@ namespace Eto.Parse.Tests.Grammars
 			);
 
 			var match = grammar.Match(input);
-			Assert.IsTrue(match.Success, match.ErrorMessage);
-			Assert.AreEqual("hello", match["first"]["value"].Text);
-			Assert.AreEqual("parsing world", match["second"]["value"].Text);
+			Assert.True(match.Success, match.ErrorMessage);
+			Assert.Equal("hello", match["first"]["value"].Text);
+			Assert.Equal("parsing world", match["second"]["value"].Text);
 		}
 
-		[Test]
+		[Fact]
 		public void RepeatUntil()
 		{
 			var input = "abc def 1234";
@@ -49,11 +46,11 @@ namespace Eto.Parse.Tests.Grammars
 			var repeat = new Grammar(Terminals.AnyChar.Repeat().Until(ws.Then(Terminals.Digit))) { AllowPartialMatch = true };
 
 			var match = repeat.Match(input);
-			Assert.IsTrue(match.Success);
-			Assert.AreEqual("abc def", match.Text);
+			Assert.True(match.Success);
+			Assert.Equal("abc def", match.Text);
 		}
 
-		[Test]
+		[Fact]
 		public void Except()
 		{
 			var ch = Terminals.AnyChar.Except(Terminals.WhiteSpace).Repeat();
@@ -63,8 +60,8 @@ namespace Eto.Parse.Tests.Grammars
 			var repeat = new Grammar(ch) { AllowPartialMatch = true };
 
 			var match = repeat.Match(input);
-			Assert.IsTrue(match.Success);
-			Assert.AreEqual("abc", match.Text);
+			Assert.True(match.Success);
+			Assert.Equal("abc", match.Text);
 		}
 
 	}

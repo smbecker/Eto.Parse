@@ -4,24 +4,17 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
+
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>31855d13-e1ac-4aba-95ab-8a6e308c4807</ProjectGuid>
-    <RootNamespace>Eto.Parse</RootNamespace>
+    <ProjectGuid>e74de6d9-d207-4eaf-bd55-6dd0e55d4712</ProjectGuid>
+    <RootNamespace>Eto.Parse.TestSpeed.dnx</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">..\artifacts\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AssemblyName>Eto.Parse</AssemblyName>
-  </PropertyGroup>
+
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <ProduceOutputsOnBuild>True</ProduceOutputsOnBuild>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <ProduceOutputsOnBuild>True</ProduceOutputsOnBuild>
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DNX\Microsoft.DNX.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>

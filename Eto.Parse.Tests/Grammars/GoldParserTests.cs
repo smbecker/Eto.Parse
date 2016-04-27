@@ -1,12 +1,9 @@
-using System;
-using NUnit.Framework;
 using Eto.Parse.Grammars;
-using Eto.Parse.Writers;
 using System.Linq;
+using Xunit;
 
 namespace Eto.Parse.Tests.Grammars
 {
-	[TestFixture]
 	public class GoldParserTests
 	{
 		const string goldBnf = @"
@@ -180,17 +177,18 @@ Comment End   = '*!'
 			"Grammar", "Content", "Definition", "nl opt", "nl", "Parameter", "Parameter Body", "Parameter Items", "Parameter Item", "Set Decl", "Set Exp", "Set Item", "Terminal Decl", "Terminal Name", "Reg Exp", "Reg Exp Seq", "Reg Exp Item", "Reg Exp 2", "Kleene Opt", "Rule Decl", "Handles", "Handle", "Symbol"
 		};
 
-		[Test]
+		[Fact]
 		public void TestParsing()
 		{
 			var goldParser = new GoldGrammar();
 			var definition = goldParser.Build(goldBnf);
 
 			// check rules
-			CollectionAssert.AreEquivalent(GOLD_RULES, definition.Rules.Keys);
+			Assert.Equal(GOLD_RULES, definition.Rules.Keys);
 		}
 
-		[Test]
+#if !CORECLR
+		[Fact(Skip = "Need to switch to Roslyn for compilation")]
 		public void ToCode()
 		{
 			// test a round trip to code
@@ -202,12 +200,13 @@ Comment End   = '*!'
 			// match using generated parser
 			var match = generatedGoldParser.Match(goldBnf);
 
-			Assert.IsTrue(match.Success, "Error: {0}", match.ErrorMessage);
+			Assert.True(match.Success, string.Format("Error: {0}", match.ErrorMessage));
 
 			// check rules
 			var rules = match.Find("Rule Decl", true).Select(r => r["Nonterminal"].Text.TrimStart('<').TrimEnd('>')).ToArray();
-			CollectionAssert.AreEquivalent(GOLD_RULES, rules);
+			Assert.Equal(GOLD_RULES, rules);
 		}
+#endif
 	}
 }
 

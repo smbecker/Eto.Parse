@@ -1,7 +1,7 @@
-using NUnit.Framework;
 using System.IO;
 using System;
 using System.Globalization;
+using Xunit;
 
 namespace Eto.Parse.Tests
 {
@@ -21,7 +21,7 @@ namespace Eto.Parse.Tests
 		{
 			if (actualValue == null || expectedValue == null)
 			{
-				Assert.AreEqual(expectedValue, actualValue);
+				Assert.Equal(expectedValue, actualValue);
 				return;
 			}
 
@@ -48,7 +48,7 @@ namespace Eto.Parse.Tests
 			}
 			output.WriteLine();
 
-			Assert.AreEqual(expectedValue, actualValue);
+			Assert.Equal(expectedValue, actualValue);
 		}
 
 		private static string ToSafeString(this char c)
@@ -73,7 +73,7 @@ namespace Eto.Parse.Tests
 						return String.Format("\\u{0:X};", (int)c);
 				}
 			}
-			return c.ToString(CultureInfo.InvariantCulture);
+			return c.ToString();
 		}
 	}
 

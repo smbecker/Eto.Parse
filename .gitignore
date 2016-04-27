@@ -5,5 +5,7 @@ obj/
 test-results
 packages/
 *.user
+.vs/
+.vscode/
 artifacts/
 *.lock.json

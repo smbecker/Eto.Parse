@@ -58,16 +58,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\Eto.Parse\Eto.Parse.csproj">
-      <Project>{C068996C-0949-4550-B21C-EF724D1894DA}</Project>
-      <Name>Eto.Parse</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Eto.Parse.Samples\Eto.Parse.Samples.csproj">
-      <Project>{EE5E310D-5E44-44B3-8634-D680A566F38F}</Project>
-      <Name>Eto.Parse.Samples</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
     <None Include="Markdown\tests\pandoc\failure-to-escape-less-than.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

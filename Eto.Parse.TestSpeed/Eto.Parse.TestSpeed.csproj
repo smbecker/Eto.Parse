@@ -95,14 +95,6 @@
       <Project>{EE26FDF9-63E3-4620-9210-ABF1517AE055}</Project>
       <Name>Eto.Parse.Tests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Eto.Parse\Eto.Parse.csproj">
-      <Project>{C068996C-0949-4550-B21C-EF724D1894DA}</Project>
-      <Name>Eto.Parse</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Eto.Parse.Samples\Eto.Parse.Samples.csproj">
-      <Project>{EE5E310D-5E44-44B3-8634-D680A566F38F}</Project>
-      <Name>Eto.Parse.Samples</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Tests\Json\sample-large.json" />

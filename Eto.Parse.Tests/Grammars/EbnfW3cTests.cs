@@ -1,10 +1,8 @@
-﻿using System;
-using NUnit.Framework;
-using Eto.Parse.Grammars;
+﻿using Eto.Parse.Grammars;
+using Xunit;
 
 namespace Eto.Parse.Tests.Grammars
 {
-	[TestFixture]
 	public class EbnfW3cTests
 	{
 		// spec from: http://www.w3.org/TR/REC-xml/
@@ -190,7 +188,7 @@ Digit ::= [#x0030-#x0039] | [#x0660-#x0669] | [#x06F0-#x06F9] | [#x0966-#x096F] 
 Extender ::= #x00B7 | #x02D0 | #x02D1 | #x0387 | #x0640 | #x0E46 | #x0EC6 | #x3005 | [#x3031-#x3035] | [#x309D-#x309E] | [#x30FC-#x30FE]
 ";
 
-		[Test]
+		[Fact]
 		public void TestXmlParser()
 		{
 			const string xmlDocument = @"<?xml version='1.0' encoding='utf-8' ?>
@@ -204,7 +202,7 @@ Extender ::= #x00B7 | #x02D0 | #x02D1 | #x0387 | #x0640 | #x0E46 | #x0EC6 | #x30
 			var xmlGrammar = ebnfGrammar.Build(xmlW3cEbnf, "document");
 			var match = xmlGrammar.Match(xmlDocument);
 
-			Assert.IsTrue(match.Success, match.ErrorMessage);
+			Assert.True(match.Success, match.ErrorMessage);
 		}
 
 		// from http://docs.killianfaughnan.com/csvsqldocs/x235.html
@@ -316,7 +314,7 @@ character_set ::=
 numeric ::=
     ""0""|""1""|""2""|""3""|""4""|""5""|""6""|""7""|""8""|""9""";
 
-		[Test]
+		[Fact]
 		public void TestSqlParser()
 		{
 			const string sqlStatement = @"select * from MyTable where MyColumn = hello";
@@ -326,7 +324,7 @@ numeric ::=
 			var xmlGrammar = ebnfGrammar.Build(sqlW3cEbnf, "command");
 			var match = xmlGrammar.Match(sqlStatement);
 
-			Assert.IsTrue(match.Success, match.ErrorMessage);
+			Assert.True(match.Success, match.ErrorMessage);
 		}
 
 	}

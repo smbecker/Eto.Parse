@@ -1,50 +1,63 @@
 using System;
-using NUnit.Framework;
-using Eto.Parse.Samples.Markdown;
 using System.Collections.Generic;
-using System.Reflection;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using Eto.Parse.Samples.Markdown;
+using Xunit;
 
 namespace Eto.Parse.Tests.Markdown
 {
-	[TestFixture]
 	public class MarkdownTests
 	{
-		public static readonly string BasePath = Path.Combine(Path.GetDirectoryName(typeof(MarkdownTests).Assembly.Location), "Markdown", "tests");
-		MarkdownGrammar grammar;
-		MarkdownDeep.Markdown deep;
+		private static readonly List<string> markdownResources = typeof(MarkdownTests)
+			.GetTypeInfo()
+			.Assembly.GetManifestResourceNames()
+			.Where(x => x.IndexOf("Markdown", StringComparison.OrdinalIgnoreCase) != -1)
+			.ToList();
+		private readonly MarkdownGrammar grammar = new MarkdownGrammar();
 
-		[TestFixtureSetUp]
-		public void SetUp()
+		[Theory(Skip = "Do not run for now")]
+		[MemberData("GetAllTests")]
+		public void ExecuteTest(string name)
 		{
-			grammar = new MarkdownGrammar();
-			deep = new MarkdownDeep.Markdown();
+			//ExecuteTest(name, deep.Transform);
+			ExecuteTest(name, grammar.Transform);
 		}
 
-		[Test, TestCaseSource("AllTests")]
-		public void TestFile(string name)
+		public void ExecuteTest(string name, Func<string, string> generate) 
 		{
-			//TestFile(name, deep.Transform);
-			TestFile(name, grammar.Transform);
-		}
+			var textResource = markdownResources.FirstOrDefault(x => x == name + ".text");
+			if (textResource == null)
+			{
+				textResource = markdownResources.FirstOrDefault(x => x == name + ".txt");
+			}
 
-		public void TestFile(string name, Func<string, string> generate)
-		{
-			var fileName = Path.Combine(BasePath, name + ".text");
-			if (!File.Exists(fileName))
-				fileName = Path.Combine(BasePath, name + ".txt");
-			var text = File.ReadAllText(fileName);
-			var html = File.ReadAllText(Path.Combine(BasePath, name + ".html"));
+			Assert.False(textResource == null, string.Format("Could not locate {0}.txt", name));
+
+			var htmlResource = markdownResources.FirstOrDefault(x => x == name + ".html");
+			Assert.False(htmlResource == null, string.Format("Could not locate {0}.html", name));
+
+			var text = ReadTextFromResource(textResource);
+			var html = ReadTextFromResource(htmlResource);
+
 			var generatedHtml = generate(text);
 			//Console.WriteLine(generatedHtml);
 			CompareHtml(html, generatedHtml);
 		}
 
-		public static void CompareHtml(string html, string generatedHtml)
+		private static string ReadTextFromResource(string resourceName)
 		{
-			Assert.AreEqual(RemoveNewlines(html), RemoveNewlines(generatedHtml));
+			using (var stream = typeof(MarkdownTests).GetTypeInfo().Assembly.GetManifestResourceStream(resourceName))
+			{
+				return new StreamReader(stream).ReadToEnd();
+			}
+		}
+
+		private static void CompareHtml(string html, string generatedHtml)
+		{
+			Assert.Equal(RemoveNewlines(html), RemoveNewlines(generatedHtml));
 			/**
 			var constraint = Is.EqualTo(generatedHtml);
 			if (!constraint.Matches(html))
@@ -56,7 +69,7 @@ namespace Eto.Parse.Tests.Markdown
 			/**/
 		}
 
-		static string RemoveNewlines(string html)
+		private static string RemoveNewlines(string html)
 		{
 			html = html.Replace("\r\n", "\n");
 			html = html.Replace("\r", "\n");
@@ -76,40 +89,28 @@ namespace Eto.Parse.Tests.Markdown
 			return html.Trim();
 		}
 
-		public IEnumerable<string> AllTests
-		{
-			get
-			{
-				var tests = Enumerable.Empty<string>();
-				tests = tests.Concat(GetTests("blocktests"));
-				// tests = tests.Concat(GetTests("extramode")); // no extra mode yet
-				tests = tests.Concat(GetTests("mdtest01"));
-				tests = tests.Concat(GetTests("mdtest11"));
-				//tests = tests.Concat(GetTests("pandoc")); // other parsers don't pass these either
-				tests = tests.Concat(GetTests("phpmarkdown"));
-				tests = tests.Concat(GetTests("safemode"));
-				tests = tests.Concat(GetTests("simple"));
-				tests = tests.Concat(GetTests("spantests"));
-				tests = tests.Concat(GetTests("xsstests"));
-				/*
-				foreach (var dir in Directory.GetDirectories(BasePath))
-				{
-					tests = tests.Concat(GetTests(dir));
-				}*/
-				return tests;
-			}
+		public static IEnumerable<object[]> GetAllTests() {
+			return new[] {
+				GetTests("blocktests"),
+				// GetTests("extramode"),
+				GetTests("mdtest01"),
+				GetTests("mdtest11"),
+				//GetTests("pandoc"), // other parsers don't pass these either
+				GetTests("phpmarkdown"),
+				GetTests("safemode"),
+				GetTests("simple"),
+				GetTests("spantests"),
+				GetTests("xsstests")
+			}.SelectMany(x => x.ToList())
+			.Select(x => new object[] { x });
 		}
 
-		public IEnumerable<string> GetTests(string path, string pattern = "*.html")
+		private static IEnumerable<string> GetTests(string path)
 		{
-			var dir = Path.Combine(BasePath, path);
-			if (Directory.Exists(dir))
-			{
-				foreach (var file in Directory.GetFiles(dir, pattern))
-				{
-					yield return Path.Combine(path, Path.GetFileNameWithoutExtension(file));
-				}
-			}
+			return markdownResources.Where(x => x.IndexOf(path, StringComparison.OrdinalIgnoreCase) != -1)
+				.Where(x => x.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
+				.Select(Path.GetFileNameWithoutExtension)
+				.Distinct();
 		}
 	}
 }

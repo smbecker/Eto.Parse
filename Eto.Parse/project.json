@@ -3,67 +3,39 @@
 	"version": "1.4.1",
 	"description": "A recursive descent LL(k) parser framework for .NET",
 	"authors": [ "Picoe Software Solutions, Inc." ],
-	"tags": [
-		"parser",
-		"generator",
-		"regex",
-		"irony",
-		"grammar",
-		"fluent",
-		"yacc",
-		"lex",
-		"ebnf",
-		"bnf",
-		"gold"
-	],
-	"projectUrl": "https://github.com/picoe/Eto.Parse",
-	"licenseUrl": "https://github.com/picoe/Eto.Parse/blob/master/LICENSE",
+	"publishOptions": {
+		"tags": [
+			"parser",
+			"generator",
+			"regex",
+			"irony",
+			"grammar",
+			"fluent",
+			"yacc",
+			"lex",
+			"ebnf",
+			"bnf",
+			"gold"
+		],
+		"projectUrl": "https://github.com/picoe/Eto.Parse",
+		"licenseUrl": "https://github.com/picoe/Eto.Parse/blob/master/LICENSE"
+	},
 	"frameworks": {
-		"net451": { },
-		"dnxcore50": {
+		"netstandard1.3": {
 			"dependencies": {
-				"System.Collections": "4.0.11-beta-23516",
-				"System.IO": "4.0.11-beta-23516",
-				"System.Linq": "4.0.1-beta-23516",
-				"System.Reflection": "4.1.0-beta-23516",
-				"System.Reflection.Extensions": "4.0.1-beta-23516",
-				"System.Reflection.Primitives": "4.0.1-beta-23516",
-				"System.Runtime": "4.0.21-beta-23516",
-				"System.Runtime.Extensions": "4.0.11-beta-23516"
+				"System.Collections": "4.0.11-rc2-24027",
+				"System.IO": "4.1.0-rc2-24027",
+				"System.Linq": "4.1.0-rc2-24027",
+				"System.Reflection": "4.1.0-rc2-24027",
+				"System.Reflection.Extensions": "4.0.1-rc2-24027",
+				"System.Reflection.Primitives": "4.0.1-rc2-24027",
+				"System.Runtime": "4.1.0-rc2-24027",
+				"System.Runtime.Extensions": "4.1.0-rc2-24027"
 			},
-			"compilationOptions": {
-				"define": ["CORECLR"]
-			}
-		},
-		"netcore54": {
-			"dependencies": {
-				"System.Collections": "4.0.11-beta-23516",
-				"System.IO": "4.0.11-beta-23516",
-				"System.Linq": "4.0.1-beta-23516",
-				"System.Reflection": "4.1.0-beta-23516",
-				"System.Reflection.Extensions": "4.0.1-beta-23516",
-				"System.Reflection.Primitives": "4.0.1-beta-23516",
-				"System.Runtime": "4.0.21-beta-23516",
-				"System.Runtime.Extensions": "4.0.11-beta-23516"
-			},
-			"compilationOptions": {
+			"buildOptions": {
 				"define": [ "CORECLR" ]
 			}
 		},
-		"dotnet5.4": {
-			"dependencies": {
-				"System.Collections": "4.0.11-beta-23516",
-				"System.IO": "4.0.11-beta-23516",
-				"System.Linq": "4.0.1-beta-23516",
-				"System.Reflection": "4.1.0-beta-23516",
-				"System.Reflection.Extensions": "4.0.1-beta-23516",
-				"System.Reflection.Primitives": "4.0.1-beta-23516",
-				"System.Runtime": "4.0.21-beta-23516",
-				"System.Runtime.Extensions": "4.0.11-beta-23516"
-			},
-			"compilationOptions": {
-				"define": [ "CORECLR" ]
-			}
-		}
+		"net451": {}
 	}
 }

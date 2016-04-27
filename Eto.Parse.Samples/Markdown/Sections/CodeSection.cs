@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Text;
-using System.Text.RegularExpressions;
 using Eto.Parse.Parsers;
 using Eto.Parse.Samples.Markdown.Encodings;
 

@@ -1,13 +1,12 @@
 using System;
-using NUnit.Framework;
 using Eto.Parse;
 using System.Diagnostics;
 using Eto.Parse.Grammars;
 using System.Linq;
+using Xunit;
 
 namespace Eto.Parse.Tests.Grammars
 {
-	[TestFixture]
 	public class BnfTests
 	{
 		const int speedIterations = 1000;
@@ -47,27 +46,28 @@ Vancouver, BC V5V5V5";
 			return bnfParser.Build(postalAddressBnf, "postal-address");
 		}
 
-		[Test]
+		[Fact]
 		public void BnfParser()
 		{
 			TestAddress(GetAddressParser());
 		}
 
-		[Test]
+		[Fact]
 		public void BnfParsingSpeed()
 		{
 			var bnfParser = new BnfGrammar();
 			Helper.TestSpeed(bnfParser, postalAddressBnf, speedIterations);
 		}
 
-		[Test]
+		[Fact]
 		public void AddressParsingSpeed()
 		{
 			var addressParser = GetAddressParser();
 			Helper.TestSpeed(addressParser, Address, speedIterations);
 		}
 
-		[Test]
+#if !CORECLR
+		[Fact(Skip = "Need to switch to Roslyn for compilation")]
 		public void BnfToCode()
 		{
 			// roundtrip to generated code then back again
@@ -80,29 +80,30 @@ Vancouver, BC V5V5V5";
 			var addressParser = Helper.Create<Grammar>(code, "PostalGrammar");
 			TestAddress(addressParser);
 		}
+#endif
 
-		[Test]
+		[Fact]
 		public void FailedMatch()
 		{
 			var addressParser = GetAddressParser();
 			var match = addressParser.Match(AddressMissingZipPart);
-			Assert.IsFalse(match.Success);
-			Assert.That(!match.Success, "Error was not specified");
-			Assert.That(match.ErrorIndex == AddressMissingZipPart.Length, "Error should be where the zip code is specified");
+			Assert.False(match.Success);
+			Assert.True(!match.Success, "Error was not specified");
+			Assert.True(match.ErrorIndex == AddressMissingZipPart.Length, "Error should be where the zip code is specified");
 		}
 
 		public static void TestAddress(GrammarMatch match)
 		{
-			Assert.IsTrue(match.Success, match.ErrorMessage);
-			Assert.AreEqual("Joe", match["first-name", true].Text);
-			Assert.AreEqual("Smith", match["last-name", true].Text);
-			Assert.AreEqual("123", match["house-num", true].Text);
-			Assert.AreEqual("Elm Street", match["street", true].Text);
-			Assert.AreEqual("Elm", match["street-name", true].Text);
-			Assert.AreEqual("Street", match["street-type", true].Text);
-			Assert.AreEqual("Vancouver", match["town-name", true].Text);
-			Assert.AreEqual("BC", match["state-code", true].Text);
-			Assert.AreEqual("V5V5V5", match["zip-code", true].Text);
+			Assert.True(match.Success, match.ErrorMessage);
+			Assert.Equal("Joe", match["first-name", true].Text);
+			Assert.Equal("Smith", match["last-name", true].Text);
+			Assert.Equal("123", match["house-num", true].Text);
+			Assert.Equal("Elm Street", match["street", true].Text);
+			Assert.Equal("Elm", match["street-name", true].Text);
+			Assert.Equal("Street", match["street-type", true].Text);
+			Assert.Equal("Vancouver", match["town-name", true].Text);
+			Assert.Equal("BC", match["state-code", true].Text);
+			Assert.Equal("V5V5V5", match["zip-code", true].Text);
 		}
 
 		public static void TestAddress(Grammar addressParser)
@@ -110,7 +111,7 @@ Vancouver, BC V5V5V5";
 			TestAddress(addressParser.Match(Address));
 		}
 
-		[Test]
+		[Fact]
 		public void Simple()
 		{
 			var grammarString = @"
@@ -139,9 +140,9 @@ Vancouver, BC V5V5V5";
 			var grammar = new BnfGrammar().Build(grammarString, "grammar");
 
 			var match = grammar.Match(input);
-			Assert.IsTrue(match.Success);
-			Assert.AreEqual("hello", match["first"]["simple-value", true].Text);
-			Assert.AreEqual("parsing world", match["second"]["bracket-value", true].Text);
+			Assert.True(match.Success);
+			Assert.Equal("hello", match["first"]["simple-value", true].Text);
+			Assert.Equal("parsing world", match["second"]["bracket-value", true].Text);
 		}
 	}
 }
