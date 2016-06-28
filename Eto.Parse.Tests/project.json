@@ -9,20 +9,23 @@
 	},
 	"dependencies": {
 		"Eto.Parse": "1.4.1",
-		"xunit": "2.1.0",
-		"dotnet-test-xunit": "1.0.0-rc2-build10015"
+		"xunit": "2.2.0-beta2-build3300",
+		"dotnet-test-xunit": "2.2.0-preview2-build1029"
 	},
 	"frameworks": {
 		"net451": {
 			"frameworkAssemblies": {
-				"System.Runtime": "4.0.*",
-				"System.Threading.Tasks": "4.0.*"
+				"System.Runtime": {
+					"type": "build"
+				},
+				"System.Threading.Tasks": {
+					"type": "build"
+				}
 			}
 		},
 		"netcoreapp1.0": {
 			"imports": [
-				"dnxcore50",
-				"portable-net45+win8"
+				"dotnet"
 			]
 		}
 	},
