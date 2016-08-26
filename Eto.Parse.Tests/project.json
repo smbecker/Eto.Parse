@@ -24,9 +24,18 @@
 			}
 		},
 		"netcoreapp1.0": {
-			"imports": [
-				"dotnet"
-			]
+			"dependencies": {
+				"Microsoft.NETCore.App": {
+					"type": "platform",
+					"version": "1.0.0"
+				}
+			},
+			"buildOptions": {
+				"define": [
+					"CORECLR"
+				],
+				"debugType": "portable"
+			}
 		}
 	},
 	"testRunner": "xunit"

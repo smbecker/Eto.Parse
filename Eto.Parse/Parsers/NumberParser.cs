@@ -47,7 +47,9 @@ namespace Eto.Parse.Parsers
 									return false;
 								}
 								var parameters = x.GetParameters();
-								return parameters.Length == 1 && parameters[0].ParameterType == typeof(NumberStyles);
+								return parameters.Length == 2
+									&& parameters[0].ParameterType == typeof(string)
+									&& parameters[1].ParameterType == typeof(NumberStyles);
 							});
 #else
 					parseMethod = ValueType.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public, null, new Type[] { typeof(string), typeof(NumberStyles) }, null);

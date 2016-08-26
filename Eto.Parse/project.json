@@ -33,7 +33,10 @@
 				"System.Runtime.Extensions": "4.1.0"
 			},
 			"buildOptions": {
-				"define": [ "CORECLR" ]
+				"define": [
+					"CORECLR"
+				],
+				"debugType": "portable"
 			}
 		},
 		"net451": {}
