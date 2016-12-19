@@ -30,7 +30,7 @@ namespace Eto.Parse.Parsers
 
 		public NumberParser()
 		{
-			DecimalSeparator = Convert.ToChar(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator);
+			DecimalSeparator = '.';
 			ValueType = typeof(decimal);
 		}
 
