@@ -47,12 +47,13 @@ namespace Eto.Parse.Parsers
 									return false;
 								}
 								var parameters = x.GetParameters();
-								return parameters.Length == 2
+								return parameters.Length == 3
 									&& parameters[0].ParameterType == typeof(string)
-									&& parameters[1].ParameterType == typeof(NumberStyles);
+									&& parameters[1].ParameterType == typeof(NumberStyles)
+									&& parameters[2].ParameterType == typeof(IFormatProvider);
 							});
 #else
-					parseMethod = ValueType.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public, null, new Type[] { typeof(string), typeof(NumberStyles) }, null);
+					parseMethod = ValueType.GetMethod("Parse", BindingFlags.Static | BindingFlags.Public, null, new Type[] { typeof(string), typeof(NumberStyles), typeof(IFormatProvider) }, null);
 #endif
 				}
 				args.Pop();
@@ -70,7 +71,7 @@ namespace Eto.Parse.Parsers
 			if (AllowExponent)
 				style |= NumberStyles.AllowExponent;
 
-			return parseMethod.Invoke(null, new object[] { text, style });
+			return parseMethod.Invoke(null, new object[] { text, style, NumberFormatInfo.InvariantInfo });
 		}
 
 		protected override int InnerParse(ParseArgs args)
